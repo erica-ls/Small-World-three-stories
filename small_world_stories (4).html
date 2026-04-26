@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Small World Integration Stories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        /* Banner Styles */
+        .banner {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .banner-content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 3;
+        }
+
+        .banner h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 30px;
+        }
+
+        .banner-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .banner-section h3 {
+            color: #ffd700;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 8px;
+        }
+
+        .banner-section p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .banner-section ul {
+            margin-left: 20px;
+        }
+
+        .banner-section li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background-color: rgba(255, 215, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Stories Grid */
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .story-image {
+            width: 100%;
+            height: 250px;
+            border-bottom: 3px solid #e9ecef;
+        }
+
+        .story-content {
+            padding: 25px;
+        }
+
+        .story-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .story-summary {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            border-left: 4px solid #2196f3;
+            font-style: italic;
+        }
+
+        /* Tables */
+        .table-section {
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+
+        .table-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .table-content {
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            width: 40%;
+            color: #2c3e50;
+        }
+
+        td:last-child {
+            background-color: white;
+            width: 60%;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .templates-list {
+            background-color: #e8f5e8;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .templates-list ul {
+            margin-left: 20px;
+        }
+
+        .templates-list li {
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+
+        /* Full Stories Section */
+        .full-stories {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 3px solid #3498db;
+        }
+
+        .full-stories h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            font-size: 2em;
+        }
+
+        .full-story {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .full-story h3 {
+            color: #3498db;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .full-story-text {
+            line-height: 1.8;
+            font-size: 1.05em;
+            color: #444;
+        }
+
+        @media (max-width: 1024px) {
+            .banner-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .main-title {
+                font-size: 2em;
+            }
+            
+            .banner {
+                padding: 25px;
+            }
+            
+            .banner h2 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">Small World Integration Stories</h1>
+        
+        <!-- Banner Section -->
+        <div class="banner">
+            <div class="logo">Sheva 2.0</div>
+            <div class="banner-content-wrapper">
+                <h2>Small World Play: A Gateway to Deep Learning</h2>
+                
+                <div class="banner-content">
+                    <div class="banner-section">
+                        <h3>What Is It?</h3>
+                        <p><span class="highlight">Small world play</span> involves children engaging with small dramatic play sets—trays containing items like nests, soft birds, eggs, frogs, and wooden trees. Children create imaginary scenarios on felt mats, arranging objects and bringing them to life through storytelling.</p>
+                        <p>This play thrives in a <span class="highlight">thoughtfully prepared environment</span> with accessible materials, clear routines for setup and cleanup, and connections to real-world experiences.</p>
+                    </div>
+
+                    <div class="banner-section">
+                        <h3>Why It's Important</h3>
+                        <ul>
+                            <li><strong>Deep Engagement:</strong> Children complete full work cycles, building internal <span class="highlight">satisfaction and competence</span></li>
+                            <li><strong>Essential Skills:</strong> Develops sustained attention, task persistence, initiative, and organizational abilities</li>
+                            <li><strong>Social & Motor Development:</strong> Enhances social skills through parallel play and strengthens fine motor control</li>
+                            <li><strong>Imagination & Curiosity:</strong> Provides opportunities for creative expression and <span class="highlight">rigorous learning</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="banner-section">
+                        <h3>Jewish Lenses Aligned</h3>
+                        <ul>
+                            <li><strong>Masa (Journey):</strong> Through repeated practice and return to materials, children experience growth and deepen understanding over time</li>
+                            <li><strong>Hit'orerut (Awakening):</strong> Children discover their capacity for sustained focus, experiencing amazement and wonder as sources of energy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stories Grid with Videos and Summaries -->
+        <div class="stories-grid">
+            <!-- Independence Story -->
+            <div class="story-card">
+                <iframe src="https://player.vimeo.com/video/1093285296?autoplay=1&loop=1&muted=1&background=0&controls=1" 
+                        class="story-image independence-video" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen
+                        style="width: 100%; height: 250px;"
+                        data-loop-count="0">
+                </iframe>
+                <div class="story-content">
+                    <h2 class="story-title">Independence Story</h2>
+                    
+                    <div class="story-summary">
+                        A 2.5-year-old independently chooses small world materials, engages in 15 minutes of meaningful play with a peer, negotiates sharing, and completes the full work cycle by cleaning up and transitioning to a new activity.
+                    </div>
+
+                    <div class="table-section">
+                        <div class="table-header">Big Ideas for Independence</div>
+                        <div class="table-content">
+                            <table>
+                                <tr>
+                                    <td>Giving children a place to land</td>
+                                    <td>Gather materials for a small world experience</td>
+                                </tr>
+                                <tr>
+                                    <td>Planning the Prepared Environment</td>
+                                    <td>Laying out the classroom, creating a cozy space for two person play</td>
+                                </tr>
+                                <tr>
+                                    <td>Preteaching Routines</td>
+                                    <td>Teach pairs of children with a 'small worlds play'-Tray show and tell; offer explicit practice</td>
+                                </tr>
+                                <tr>
+                                    <td>Leveraging earlier experiences</td>
+                                    <td>Bringing materials from your nature walks onto your shelves to connect small world play to experiences children have recently had and may want to re-enact</td>
+                                </tr>
+                                <tr>
+                                    <td>Visual signage with process</td>
+                                    <td>Visual signage with four steps of Small world play</td>
+                                </tr>
+                                <tr>
+                                    <td>Create thoughtful activities</td>
+                                    <td>Get started materials set: Baskets trays felts and initial supplies that offer variety and choice, without finite outcomes or overwhelming quantities</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="table-section">
+                        <div class="table-header">Templates & Resources</div>
+                        <div class="table-content">
+                            <div class="templates-list">
+                                <ul>
+                                    <li>Small world 4 step signage</li>
+                                    <li>Group ordering: collections of materials as starting points</li>
+                                    <li>Social story showing children replaying experiences</li>
+                                    <li>Video of Lisa and Iris explaining prepared environments</li>
+                                    <li>Video of Lisa and Iris explaining small world play</li>
+                                    <li>Letter to families about collecting themed items</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scaffolding Story -->
+            <div class="story-card">
+                <iframe src="https://player.vimeo.com/video/1093286536?autoplay=1&loop=1&muted=1&background=0&controls=1" 
+                        class="story-image scaffolding-video" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen
+                        style="width: 100%; height: 250px;"
+                        data-loop-count="0">
+                </iframe>
+                <div class="story-content">
+                    <h2 class="story-title">Scaffolding Story</h2>
+                    
+                    <div class="story-summary">
+                        A teacher joins a child whose play has become physical and unfocused, helping ground the play in storytelling by adding narrative elements, introducing a problem-solution structure, and facilitating peer collaboration.
+                    </div>
+
+                    <div class="table-section">
+                        <div class="table-header">Big Ideas for Scaffolding</div>
+                        <div class="table-content">
+                            <table>
+                                <tr>
+                                    <td>Notice</td>
+                                    <td>Observe if the child's small world play is still sensory, physical, or connected to play themes with characters, settings, and plot sequences</td>
+                                </tr>
+                                <tr>
+                                    <td>Match or Join</td>
+                                    <td>Join at the level you see (sensory, physical, mental patterns or abstract storytelling)</td>
+                                </tr>
+                                <tr>
+                                    <td>Deepen by grounding</td>
+                                    <td>Point and label, narrate the sensory, physical action, categories and patterns or story elements</td>
+                                </tr>
+                                <tr>
+                                    <td>Deepen by adding Pretend play elements</td>
+                                    <td>Connect grounding elements to small world story features, helping children notice which materials can be characters and settings</td>
+                                </tr>
+                                <tr>
+                                    <td>Deepen by adding sequence</td>
+                                    <td>Create play menus from recent read alouds, nature walk photos, or other group's play to show story structure with beginning, middle, end</td>
+                                </tr>
+                                <tr>
+                                    <td>Help peers match or join</td>
+                                    <td>Point out matches and synergies between peers, demonstrate how actions can be part of the same larger storyline</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Responsive Repair Story -->
+            <div class="story-card">
+                <iframe src="https://player.vimeo.com/video/1093285622?autoplay=1&loop=1&muted=1&background=0&controls=1" 
+                        class="story-image repair-video" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen
+                        style="width: 100%; height: 250px;"
+                        data-loop-count="0">
+                </iframe>
+                <div class="story-content">
+                    <h2 class="story-title">Responsive Repair Story</h2>
+                    
+                    <div class="story-summary">
+                        When two children conflict over small world materials, a teacher uses emotion regulation techniques, reframes possessive language, and guides them toward collaborative storytelling using "I'm imagining" language.
+                    </div>
+
+                    <div class="table-section">
+                        <div class="table-header">Big Ideas for Responsive Repair</div>
+                        <div class="table-content">
+                            <table>
+                                <tr>
+                                    <td>Regulating Emotions to keep everyone safe and in connection</td>
+                                    <td>Use calming techniques like deep breathing and warm physical support to help children manage big emotions during conflicts</td>
+                                </tr>
+                                <tr>
+                                    <td>Put on your own oxygen mask first</td>
+                                    <td>Teachers model emotional regulation and stay calm to effectively support children through conflicts</td>
+                                </tr>
+                                <tr>
+                                    <td>Creating Signals to slow physical reactions</td>
+                                    <td>Establish clear non-verbal signals (like the muscle flex) that children can use to request help before conflicts escalate</td>
+                                </tr>
+                                <tr>
+                                    <td>Labeling children's big emotions</td>
+                                    <td>Help children identify and name their feelings: "You were feeling upset" to build emotional vocabulary and awareness</td>
+                                </tr>
+                                <tr>
+                                    <td>Creating Safe nonverbal support for peers</td>
+                                    <td>Use physical comfort (like an arm around Maya) to reassure all children that they are supported during conflict resolution</td>
+                                </tr>
+                                <tr>
+                                    <td>Replacing I/me/mine language with group language</td>
+                                    <td>Reframe possessive language ("my birds") to collaborative language ("classroom's birds") to promote sharing and cooperation</td>
+                                </tr>
+                                <tr>
+                                    <td>Staying and Solving instead of side stepping conflict</td>
+                                    <td>Rather than separating children or dividing materials, work through the conflict to find collaborative solutions that honor both children's ideas</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Stories Section -->
+        <div class="full-stories">
+            <h2>Complete Story Narratives</h2>
+            
+            <div class="full-story">
+                <h3>Independence Story - Complete Narrative</h3>
+                <div class="full-story-text">
+                    A 2.5 year old moves about the room looking at materials on shelves and observing what peers are doing. They go to a shelf with small dramatic play sets and choose a tray (that reminds them of something they saw earlier in a story/on a class walk?) with nests, small soft birds, little eggs, frogs, and wooden trees. They take out the felt mat and put the objects from the tray on it and begin to set the birds and eggs in the nests, make the frogs hop around and talk to the birds. They play this way for 15 minutes, at one point we see a child put all the frogs in the nest and the other child seem to disagree as both hands reach for the items in the nest; they turn and have a discussion and the girl who had put them all in the nest shrugs and shakes her head in agreement and hands two back to the boy she is playing with. He makes one of them fly all around and says something that makes her smile and slightly giggle as she watches the birdie fly. She animates the birds remaining in the nest as if they are babies chirping for their momma bird to fly back home. The play story seems to come to a conclusion and the children discuss briefly and then together they put everything back in the tray and return it to the shelf. As we pan away from the scene we see the two children walking over to another area, one begins to choose a bead stringing set and take it to another table where a peer has already chosen another bead stringing set.
+                </div>
+            </div>
+
+            <div class="full-story">
+                <h3>Scaffolding Story - Complete Narrative</h3>
+                <div class="full-story-text">
+                    A child is playing at the small worlds table. While the materials in front of him are nature themed (frogs birds nest feathers pebbles and stick collections), the child's play seems to be more physical in nature and slightly over energetic and unrelated to the supplies and intention of the activity. Instead this child is grabbing items and piling them up into the nest one on top of the other: figurines and small parts and supplies are all tossed into a large pile. Another boy looks over at the play but steps back and doesn't join. The teacher looks over at the play and decides to join and help ground the play in the materials before helping the peer join. On her way over, she grabs a handful of colorful pebbles that she may want to offer the child. As she approaches we see the child stacking birds, rocks and sticks up in a giant pile and then using a stick to knock them down making explosion sounds with his mouth but not speaking any words. The teacher joins warmly, approaching in view of the child and crouches down. The teacher holds out two pebbles and the child accepts one and adds it to the nest. She says "I see you are playing with birds, nests, sticks and pebbles" (as she points to each item and names it in a calm grounding voice that helps the child attend to the materials in front of him and notice what they are)..."Can you tell me about the story that's happening with this nest?" Child doesn't respond and teacher warmly follows through for a response "Hey try again, I asked Can you tell me about this nest or would you like ideas for the nest?" Child turns to teacher and shrugs. Teacher replies warmly, "Let's think of the story together: I see a lot of items in a pile. Did the nest fall out of the tree or should we pretend it's still in the tree?" Child replies "Fall!". "Oh dear," says the teacher with a pretend tone..."poor birdie. Perhaps there was a big storm. The nest fell down. This is an important part of the story. Shall I take a photo of this PROBLEM and then I can take another photo when you solve the problem?" Child nods excited about the photo. Teacher "I wonder if the frogs will help or if you need a different helper. The peer has tiptoed back over and is next to the table and teacher watching along now. Teacher asks child, "I wonder if Solomon can help us find a momma bird to come help clean up the nest." Child turns to Solomon "We need a momma bird and a LOT more sticks." Solomon lights up and heads back to the shelf to fill another tray with the additional supplies. As the children settle into an active play of building a larger storm proof nest and pretending the frogs and birds are cleaning up the storm destruction, the teacher offers that she would love to come back to photograph the solution when they are done with this work so other children can see ideas for telling their own 'stormy day story' in the Small world play area.
+                </div>
+            </div>
+
+            <div class="full-story">
+                <h3>Responsive Repair Story - Complete Narrative</h3>
+                <div class="full-story-text">
+                    In a Montessori classroom, young Ezra meticulously constructs a small world scene of birds and nests. Maya approaches, eager to join, but her enthusiastic additions disrupt Ezra's carefully ordered creation. Some rocks fall and Ezra reaches to snatch the bird out of Maya's hand yelling "NO! It doesn't GO THERE!". Ezra stands up visibly distressed by the disarray and Maya looks hurt and worried, but Ezra flexes his muscles-help signal as he scans the room for the teacher. Ms. R heard the upset and is flexing the symbol back to Ezra with a warm smile as she pops over. Behind her we see children continuing their drawing at a big table and an assistant in the nearby dress up area smiles to them that she is available if they need anything as she shifts her position to be able to see both areas. Ms. R reaches the children, and puts a warm protective arm around Maya as she turns to Ezra and says "Thank you for signaling me. You were feeling upset. Can you take a deep heart breath and tell me what feels like it's going wrong?" (with one hand still around Maya, Ms. R puts her other hand to her chest and models a deep calming breath which Ezra somewhat matches though his voice grows tearful and angry again as he begins explaining). "The birds don't go there! And the rocks are falling now. And" (points at Maya) "She is breaking it!". Ms. R reframes the big upset, "You had a story idea and Maya didn't match your story, is that right?" Maya wants to defend herself but Ms. R gives her a warm squeeze as Ezra folds his arms shaking his head in agreement with this summary. Ms. R continues "Ezra has ideas and Maya has ideas, how can we make sure the ideas fit together without the game feeling wrong? Without the rocks falling? Ezra, can you use the words 'I'm imagining....' to tell Maya how you hope the story will be?" Ezra says "You can't touch my birds". Ms. R tries again "Ezra, you are worried about children touching the birds, but these are the classroom's birds so we are going to figure out a way to play with the birds that feels right for the story you are imagining. Can you tell Maya what you want by saying 'I'm imagining...'" Ezra: "I'm imagining that the birds are waiting for the eggs to hatch but the momma isn't home." Maya bravely suggests an idea that fits with Ezra's words "I can be the momma bird and I can fly to my meetings until the babies call me home." Ms. R narrates the solution and soon the children are playing again. Ezra and Maya both relax into the play as Ms. R joins a table nearby with a view of the small worlds area as she supports a group of children who are beading but frustrated that the beads keep falling off the other end of the strings....
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script>
+        // Initialize Vimeo players with loop control
+        document.addEventListener('DOMContentLoaded', function() {
+            // Independence video
+            const independencePlayer = new Vimeo.Player(document.querySelector('.independence-video'));
+            let independenceLoops = 0;
+            
+            independencePlayer.on('ended', function() {
+                independenceLoops++;
+                if (independenceLoops < 4) {
+                    independencePlayer.play();
+                }
+            });
+
+            // Scaffolding video  
+            const scaffoldingPlayer = new Vimeo.Player(document.querySelector('.scaffolding-video'));
+            let scaffoldingLoops = 0;
+            
+            scaffoldingPlayer.on('ended', function() {
+                scaffoldingLoops++;
+                if (scaffoldingLoops < 4) {
+                    scaffoldingPlayer.play();
+                }
+            });
+
+            // Repair video
+            const repairPlayer = new Vimeo.Player(document.querySelector('.repair-video'));
+            let repairLoops = 0;
+            
+            repairPlayer.on('ended', function() {
+                repairLoops++;
+                if (repairLoops < 4) {
+                    repairPlayer.play();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
